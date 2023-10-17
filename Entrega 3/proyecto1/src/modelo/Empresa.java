@@ -1,17 +1,29 @@
 package modelo;
+import modelo.AdminGeneral;
+import modelo.AdminLocal;
+import modelo.Cliente;
+import modelo.Empleado;
+import modelo.Categoria;
+import modelo.Vehiculo;
+import modelo.Reserva;
 
 import java.nio.file.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 public class Empresa {
 	
-	private List<UsuarioGenerico> usuarios = new ArrayList<>();
-	private List<Sede> sedes = new ArrayList<>();
-	private List<Vehiculo> vehiculos = new ArrayList<>();
-	private List<Seguro> seguros = new ArrayList<>();
-
+	private HashMap<String, UsuarioGenerico> usuarios = new HashMap<>();
+	private HashMap<String, Cliente> clientes = new HashMap<>();
+	private List<Empleado> empleados = new ArrayList<>();
+	private List<AdminLocal> adminsLocales = new ArrayList<>();
+	private AdminGeneral adminGeneral;
+	private HashMap<String, Sede> sedes = new HashMap<>();
+	private HashMap<String, Categoria> categorias = new HashMap<>();
+	private HashMap<String, Seguro> seguros = new HashMap<>();
+	
 
 
     // Atributos
@@ -60,6 +72,15 @@ public class Empresa {
     public void cargarInformacion() {
         // Código para cargar información
     }
+    public void registrarSede(String nombre, String ubicacion, String horarios)
+	{
+		Sede nuevaSede = new Sede(nombre, ubicacion, horarios);
+		anadirSede(nuevaSede);
+	}
+    public void anadirSede(Sede sede)
+    {
+    	
+    }
 
     public void cargarUsuarios() {
         Path path = Paths.get("Proyecto-1/Entrega 3/proyecto1/data/usuarios.txt");
@@ -70,30 +91,41 @@ public class Empresa {
             String[] adminGeneralInfo = lines.get(0).split("&");
             for (String info : adminGeneralInfo) {
                 String[] details = info.split(";");
-                usuarios.add(new AdminGeneral(details[0], details[1], details[2]));
+                AdminGeneral admin = new AdminGeneral("Admin General", details[0], details[1], details[2]);
+                usuarios.put(details[1],admin);
+                adminGeneral =  admin;
             }
 
             // AdminLocal
             String[] adminLocalInfo = lines.get(1).split("&");
             for (String info : adminLocalInfo) {
                 String[] details = info.split(";");
-                usuarios.add(new AdminLocal(details[0], details[1], details[2]));
+                AdminLocal admin = new AdminLocal("Admin Local", details[0], details[1], details[2]);
+                usuarios.put(details[1],admin);
+                adminsLocales.add(admin);
             }
 
             // Empleado
             String[] empleadoInfo = lines.get(2).split("&");
             for (String info : empleadoInfo) {
-                String[] details = info.split(";");
-                usuarios.add(new Empleado(details[0], details[1], details[2]));
+                String[] details = info.split(";"); 
+                Empleado nuevoEmpleado = new Empleado(details[0], details[1], details[2], details[3]);
+                usuarios.put(details[1], nuevoEmpleado);
+                empleados.add(nuevoEmpleado);
+                Sede sedeEmpleado = sedes.get(details[4]);
+                sedeEmpleado.anadirEmpleado(nuevoEmpleado);
             }
 
             // Cliente
             String[] clienteInfo = lines.get(3).split("&");
             for (String info : clienteInfo) {
                 String[] details = info.split(";");
-                usuarios.add(new Cliente(details[0], details[1], details[2], details[3], details[4], details[5],
+                usuarios.put(details[1],new Cliente(details[0], details[1], details[2], details[3], details[4], details[5],
                         details[6], details[7], details[8], details[9], details[10], details[11], details[12],
-                        details[13], details[14], details[15]));
+                        details[13], details[14], details[15], details[16]));
+                clientes.put(details[1],new Cliente(details[0], details[1], details[2], details[3], details[4], details[5],
+                        details[6], details[7], details[8], details[9], details[10], details[11], details[12],
+                        details[13], details[14], details[15], details[16]));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,24 +134,20 @@ public class Empresa {
 
 
 
-
     public void cargarVehiculos() {
         Path path = Paths.get("Proyecto-1/Entrega 3/proyecto1/data/vehiculo.txt");
         try {
             List<String> lines = Files.readAllLines(path);
-
             for (String line : lines) {
                 String[] parts = line.split(":");
-                String categoria = parts[0];
-                // Puede guardar las tarifas si es necesario
-                String[] vehiculosInfo = parts[3].split("&");
-
-                for (String info : vehiculosInfo) {
-                    String[] details = info.split(";");
-                    boolean estado = Boolean.parseBoolean(details[7]);
-                    vehiculos.add(new Vehiculo(categoria, details[0], details[1], details[2], details[3], details[4], 
-                        details[5], Integer.parseInt(details[6]), estado, details[8]));
+                Categoria currentCategoria = new Categoria(parts[0],Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]));
+                String[] carros = parts[5].split("&");
+                for (String carro : carros) {
+                    String[] details = carro.split(";");
+                    Vehiculo currentCarro = new Vehiculo(details[0], details[1], details[2], details[3], details[4], Integer.parseInt(details[5]), Boolean.parseBoolean(details[6]), details[7], details[8]);
+                    currentCategoria.anadirCarro(currentCarro);
                 }
+                categorias.put(parts[0], currentCategoria);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,7 +164,7 @@ public class Empresa {
                 String[] sedesInfo = line.split("&");
                 for (String info : sedesInfo) {
                     String[] details = info.split(";");
-                    sedes.add(new Sede(details[0], details[1], details[2]));
+                    sedes.put(details[0],new Sede(details[0], details[1], details[2]));
                 }
             }
         } catch (IOException e) {
@@ -148,45 +176,17 @@ public class Empresa {
     public void cargarReservas() {
         List<Reserva> reservas = new ArrayList<>();
         Path path = Paths.get("Proyecto-1/Entrega 3/proyecto1/data/reservas.txt");
-        
         try {
-            List<String> lines = Files.readAllLines(path);
-            
-            for (String line : lines) {
-                String[] details = line.split(";");
-                String clienteUsuario = details[0];
-                String categoriaVehiculo = details[1];
-                String placaVehiculo = details[2];
-                boolean tieneSeguro = Boolean.parseBoolean(details[3]);
-                String nombreSeguro = details[4];
-                String fechaHoraRecogida = details[5];
-                String fechaHoraDevolucion = details[6];
-                List<ConductorAdicional> conductoresAdicionales = new ArrayList<>();
-
-                if (details.length > 7) {
-                    int numConductores = Integer.parseInt(details[7]);
-                    String[] conductoresInfo = details[8].split("&");
-
-                    for (String conductor : conductoresInfo) {
-                        String[] conductorDetails = conductor.split(":");
-                        ConductorAdicional conductorAdicional = new ConductorAdicional(
-                            conductorDetails[0], conductorDetails[1], conductorDetails[2],
-                            conductorDetails[3], conductorDetails[4], conductorDetails[5]
-                        );
-                        conductoresAdicionales.add(conductorAdicional);
-                    }
-                }
-                
-                Reserva reserva = new Reserva(clienteUsuario, categoriaVehiculo, placaVehiculo,
-                                              tieneSeguro, nombreSeguro, fechaHoraRecogida,
-                                              fechaHoraDevolucion, conductoresAdicionales);
-                reservas.add(reserva);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Asignar la lista 'reservas' a la lista de reservas de la clase Empresa (si es necesario)
+			List<String> lines = Files.readAllLines(path);
+			for (String line: lines)
+			{
+				String[] info = line.split(";");
+				Reserva laReserva = new Reserva(clientes.get(info[0]), info[1], info[2], categorias.get(info[3]), seguros.get(info[4]), sedes.get(info[5]), sedes.get(info[6]));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
     }
     
     public void cargarSeguros() {
@@ -201,28 +201,31 @@ public class Empresa {
                 double tarifa = Double.parseDouble(details[1]);
 
                 Seguro seguro = new Seguro(nombre, tarifa);
-                seguros.add(seguro);
+                seguros.put(nombre, seguro);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-    public void guardarInformacion() {
-        // Código para guardar información
+    
+    public String guardarInfoUsuarios()
+    {
+    	
+    	String end = "";
+    	//Admin General
+    	end = end + adminGeneral.getType()+";"+adminGeneral.getLogin()+";"+adminGeneral.getPassword()+";"+adminGeneral.getNombre()+"\n";
+    	// admins locales
+    	
     }
 
-    public static void main(String[] args) {
-        // Ejemplo de cómo usar los métodos
-        Empresa miEmpresa = new Empresa("RentCar", "Cra. 11 #82-71, Bogotá", "08:00-17:00");
-        miEmpresa.iniciarReserva();
-        miEmpresa.cargarInformacion();
-        miEmpresa.cargarUsuarios();
-        miEmpresa.cargarVehiculos();
-        miEmpresa.cargarSedes();
-        miEmpresa.cargarReservas();
-        miEmpresa.guardarInformacion();
+    public void guardarInformacion() throws IOException {
+    	File path = new File("./data/usuarios.txt");
+		FileWriter writer = new FileWriter(path);
+		writer.write("");
+		writer.flush();
+		writer.close();
+    	
     }
+
 }
 
