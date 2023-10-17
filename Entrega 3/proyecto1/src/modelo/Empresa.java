@@ -12,6 +12,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Collection;
 
 public class Empresa {
 	
@@ -215,13 +216,35 @@ public class Empresa {
     	//Admin General
     	end = end + adminGeneral.getType()+";"+adminGeneral.getLogin()+";"+adminGeneral.getPassword()+";"+adminGeneral.getNombre()+"\n";
     	// admins locales
+    	for (AdminLocal admin: adminsLocales )
+    	{
+    		end = end + admin.getType()+";"+admin.getLogin()+";"+admin.getPassword()+";"+admin.getNombre()+"&";
+    	}
+    	end = end +"\n";
+    	// Empleados
+    	for (Empleado empleado:empleados)
+    	{
+    		end = end + empleado.getType()+";"+empleado.getLogin()+";"+empleado.getPassword()+";"+empleado.getNombre()+";"+empleado.getSede()+"&";
+    	}
+    	end = end +"\n";
+    	//Clientes
+    	List<Cliente> listaClientes = new ArrayList<>();
+    	for (String key: clientes.keySet())
+    	{
+    		listaClientes.add(clientes.get(key));
+    	}
+    	for (Cliente cliente: listaClientes)
+    	{
+    		end = end + cliente.getType()+";"+cliente.getLogin()+";"+cliente.getPassword()+";"+cliente.getNombre()+";"+cliente.getNumeroCelular() +";"+cliente.getEmail()+";"+cliente.getFechaNacimiento()+";"+cliente.getNacionalidad()+";"+cliente.getImagenDoc()+";" +cliente.getNacionalidad()+";"+cliente.getDatosLicencia().getFechaVencimiento()+";"+cliente.getDatosLicencia().getId() +";"+cliente.getDatosLicencia().getCategoria()+";"+cliente.getDatosLicencia().getImagenLicencia()+";"+cliente.getDatosPago().getTipo()+";"+cliente.getDatosPago().getNumeroTarjeta()+";"+cliente.getDatosPago().getFechaVencimiento()+"&";
+    	}
     	return end;
+    	
     }
 
     public void guardarInformacion() throws IOException {
     	File path = new File("./data/usuarios.txt");
 		FileWriter writer = new FileWriter(path);
-		writer.write("");
+		writer.write(guardarInfoUsuarios());
 		writer.flush();
 		writer.close();
     	
