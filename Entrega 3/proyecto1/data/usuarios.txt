@@ -1,0 +1,4 @@
+Admin1;AdminPass1;Manuel Giraldo&Admin2;AdminPass2;Gabriela Almonacid
+LocalAdmin1;LocalPass1;Carlos Ramírez&LocalAdmin2;LocalPass2;Ana Torres
+Empleado1;EmpleadoPass1;Luis Morales&Empleado2;EmpleadoPass2;Gabriela Sánchez
+Cliente1;ClientePass1;Jorge Alvarado;3001112233;cliente1@email.com;1990-05-20;ID1.jpg;Lic1;2025-05-20;Colombia;CategoriaA;Lic1.jpg&Cliente2;ClientePass2;Laura Paredes;3001122334;cliente2@email.com;1992-08-15;ID2.jpg;Lic2;2026-08-15;Colombia;CategoriaB;Lic2.jpg

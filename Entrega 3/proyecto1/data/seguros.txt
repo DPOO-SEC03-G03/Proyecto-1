@@ -1,0 +1,2 @@
+Seguro Básico;5000
+Seguro Completo;10000
