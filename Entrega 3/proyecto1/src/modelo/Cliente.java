@@ -12,8 +12,9 @@ public class Cliente extends UsuarioGenerico {
 	private DatosLicencia datosLicencia;
 	private DatosMediosPago datosPago;
 	
-	public Cliente(String elLogin, String laPass, String elNombre ,String elNumero, String elEmail, String laFechaNac, String laNacionalidad, String laImagenDoc, String elPais, String laFechaLic, String elId, String laCategoria, String laImagen, String elTipo, String elNumeroTarj, String laFechaPag)
+	public Cliente(String elTypeUsuario, String elLogin, String laPass, String elNombre ,String elNumero, String elEmail, String laFechaNac, String laNacionalidad, String laImagenDoc, String elPais, String laFechaLic, String elId, String laCategoria, String laImagen, String elTipo, String elNumeroTarj, String laFechaPag)
 	{
+		type = elTypeUsuario;
 		login = elLogin;
 		password = laPass;
 		nombre = elNombre;
@@ -25,4 +26,33 @@ public class Cliente extends UsuarioGenerico {
 		datosLicencia = new DatosLicencia(elPais, laFechaLic, elId, laCategoria, laImagen);
 		datosPago = new DatosMediosPago(elTipo, elNumeroTarj, laFechaPag);
 	}
+
+	public String getNumeroCelular() {
+		return numeroCelular;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public String getNacionalidad() {
+		return nacionalidad;
+	}
+
+	public String getImagenDoc() {
+		return imagenDocIdentidad;
+	}
+
+	public DatosLicencia getDatosLicencia() {
+		return datosLicencia;
+	}
+
+	public DatosMediosPago getDatosPago() {
+		return datosPago;
+	}
+	
 }
