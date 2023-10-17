@@ -16,7 +16,7 @@ public class DatosLicencia {
 		imagenLicencia = laImagen;
 	}
 
-	public String getPais() {
+	public String getPaisExpedicion() {
 		return paisExpedicion;
 	}
 
@@ -24,11 +24,11 @@ public class DatosLicencia {
 		return fechaVencimiento;
 	}
 
-	public String getId() {
+	public String getIdLicencia() {
 		return idLicencia;
 	}
 
-	public String getCategoria() {
+	public String getCategoriaLicencia() {
 		return categoriaLicencia;
 	}
 
