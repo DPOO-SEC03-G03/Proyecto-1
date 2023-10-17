@@ -215,7 +215,7 @@ public class Empresa {
     	//Admin General
     	end = end + adminGeneral.getType()+";"+adminGeneral.getLogin()+";"+adminGeneral.getPassword()+";"+adminGeneral.getNombre()+"\n";
     	// admins locales
-    	
+    	return end;
     }
 
     public void guardarInformacion() throws IOException {
