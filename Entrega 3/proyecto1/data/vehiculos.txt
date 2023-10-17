@@ -1,0 +1,4 @@
+camionetas:10000:15000:Sede1;HHA-887;Ford;Bronco 2023;negro;Asistida;5;true;disponible&Sede2;CBD-420;KIA;Seltos 2021;blanca;Asistida;5;false;en limpieza&Sede1;ABC-123;Chevrolet;Tahoe 2022;azul;Automática;7;true;disponible
+sedan:8000:12000:Sede1;JJJ-123;Toyota;Corolla 2022;azul;Manual;5;true;disponible&Sede2;KKK-321;Honda;Civic 2021;rojo;Automática;5;true;disponible&Sede1;LLL-456;Hyundai;Elantra 2023;verde;Automática;5;false;en mantenimiento
+deportivo:12000:18000:Sede2;MMM-789;Porsche;911 Carrera 2021;rojo;Automática;2;true;disponible&Sede1;NNN-012;BMW;M4 2022;negro;Manual;2;false;en limpieza&Sede2;OOO-345;Audi;R8 2023;blanco;Automática;2;true;disponible
+compacto:6000:9000:Sede1;PPP-678;Honda;Fit 2021;gris;Automática;4;true;disponible&Sede2;QQQ-901;Volkswagen;Polo 2022;amarillo;Manual;4;true;disponible
