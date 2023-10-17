@@ -35,14 +35,6 @@ public class Seguro {
         return tarifaDiaria;
     }
 
-    public static void main(String[] args) {
-        // Crear instancias de SeguroSencillo y SeguroCompleto como objetos
-        Seguro seguroSencillo = new Seguro("SeguroSencillo", 10000.0);
-        Seguro seguroCompleto = new Seguro("SeguroCompleto", 20000.0);
-
-
-    }
 }
-
 
 
