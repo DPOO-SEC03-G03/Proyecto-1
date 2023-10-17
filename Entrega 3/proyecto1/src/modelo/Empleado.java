@@ -35,4 +35,8 @@ public class Empleado extends UsuarioGenerico {
 	{
 		sede = laSede;
 	}
+	public String getSede()
+	{
+		return this.sede.getNombre();
+	}
 }
